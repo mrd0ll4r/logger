@@ -18,6 +18,11 @@ const (
 	NumLevels // can be used to log everything, even if levels are added or removed in the future
 )
 
+// Levels returns a slice of all Levels (excluding Off and NumLevels) ordered from fine to severe (Debug to Fatal)
+func Levels() []LogLevel {
+	return []LogLevel{LevelDebug, LevelVerbose, LevelInfo, LevelOK, LevelWarn, LevelFatal}
+}
+
 // Logger is an interface for leveled loggers.
 // All logging methods must be thread-safe, no guarantee is provided regarding the other methods.
 type Logger interface {
