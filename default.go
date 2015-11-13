@@ -21,7 +21,7 @@ func Verboseln(val ...interface{}) {
 }
 
 func Verbosef(format string, val ...interface{}) {
-	DefaultLogger.Verbosef(val)
+	DefaultLogger.Verbosef(format, val)
 }
 
 func Infoln(val ...interface{}) {
@@ -29,7 +29,7 @@ func Infoln(val ...interface{}) {
 }
 
 func Infof(format string, val ...interface{}) {
-	DefaultLogger.Infof(val)
+	DefaultLogger.Infof(format, val)
 }
 
 func Okln(val ...interface{}) {
@@ -37,7 +37,7 @@ func Okln(val ...interface{}) {
 }
 
 func Okf(format string, val ...interface{}) {
-	DefaultLogger.Okf(val)
+	DefaultLogger.Okf(format, val)
 }
 
 func Warnln(val ...interface{}) {
@@ -45,7 +45,7 @@ func Warnln(val ...interface{}) {
 }
 
 func Warnf(format string, val ...interface{}) {
-	DefaultLogger.Warnf(val)
+	DefaultLogger.Warnf(format, val)
 }
 
 func Fatalln(val ...interface{}) {
@@ -53,5 +53,5 @@ func Fatalln(val ...interface{}) {
 }
 
 func Fatalf(format string, val ...interface{}) {
-	DefaultLogger.Fatalf(val)
+	DefaultLogger.Fatalf(format, val)
 }
