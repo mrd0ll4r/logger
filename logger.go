@@ -18,6 +18,8 @@ const (
 	NumLevels // can be used to log everything, even if levels are added or removed in the future
 )
 
+// Logger is an interface for leveled loggers.
+// All logging methods must be thread-safe, no guarantee is provided regarding the other methods.
 type Logger interface {
 	// SetLevel instructs the logger to log everything above and including the provided level
 	SetLevel(LogLevel)
