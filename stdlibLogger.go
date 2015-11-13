@@ -7,11 +7,14 @@ import (
 	"os"
 )
 
+// StdlibLogger is an implementation of the Logger interface that uses the stdlibs loggger for logging.
 type StdlibLogger struct {
 	logger *log.Logger
 	level  LogLevel
 }
 
+// NewStdlibLogger returns a new StdlibLogger.
+// If the environment variable LOGGER_DISCARD is set, the logger will discard everything (useful for benchmarks)
 func NewStdlibLogger() *StdlibLogger {
 	if os.Getenv("LOGGER_DISCARD") != "" {
 		// Hack to completely disable logging, for example when running benchmarks.
@@ -27,6 +30,7 @@ func NewStdlibLogger() *StdlibLogger {
 	}
 }
 
+// See Logger.Level
 func (l StdlibLogger) Level() LogLevel {
 	return l.level
 }
@@ -48,6 +52,7 @@ func (l *StdlibLogger) SetPrefix(prefix string) {
 	l.logger.SetPrefix(prefix)
 }
 
+// See Logger.Logs
 func (l *StdlibLogger) Logs(level LogLevel) bool {
 	return l.check(level)
 }
@@ -128,7 +133,7 @@ func (l *StdlibLogger) Okf(format string, vals ...interface{}) {
 	l.logger.Output(2, "OK: "+s)
 }
 
-// Warnln logs a formatted line with a WARNING prefix.
+// Warnln logs a line with a WARNING prefix.
 func (l *StdlibLogger) Warnln(vals ...interface{}) {
 	if !l.check(LevelWarn) {
 		return
