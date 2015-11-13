@@ -41,7 +41,7 @@ func (m *MultiLogger) SetLevel(level LogLevel) {
 
 // See Logger.Logs
 func (m *MultiLogger) Logs(level LogLevel) bool {
-	return level <= m.level
+	return level >= m.level
 }
 
 // Debugln calls Debugln on all the inner loggers
