@@ -24,8 +24,9 @@ func BenchmarkLshortfile(b *testing.B) {
 	l := NewStdlibLogger()
 	l.SetFlags(log.Lshortfile)
 	l.SetLevel(LevelOK)
+	s := "hi"
 	for i := 0; i < b.N; i++ {
-		l.Okln("hi")
+		l.Okln(s)
 	}
 }
 
@@ -33,8 +34,9 @@ func BenchmarkBare(b *testing.B) {
 	l := NewStdlibLogger()
 	l.SetFlags(0)
 	l.SetLevel(LevelOK)
+	s := "hi"
 	for i := 0; i < b.N; i++ {
-		l.Okln("hi")
+		l.Okln(s)
 	}
 }
 
@@ -42,7 +44,19 @@ func BenchmarkLevelTooLowBare(b *testing.B) {
 	l := NewStdlibLogger()
 	l.SetFlags(0)
 	l.SetLevel(LevelOK)
+	s := "hi"
 	for i := 0; i < b.N; i++ {
-		l.Debugln("hi")
+		l.Debugln(s)
+	}
+}
+
+func BenchmarkEmptyFormat(b *testing.B) {
+	l := NewStdlibLogger()
+	l.SetFlags(0)
+	l.SetLevel(LevelOK)
+	s := ""
+	s1 := "hi"
+	for i := 0; i < b.N; i++ {
+		l.Okf(s, s1)
 	}
 }
