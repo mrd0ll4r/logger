@@ -57,5 +57,5 @@ type Logger interface {
 	Fatalf(string, ...interface{})
 }
 
-// The default logger logs to standard output with a time prefix, seee NewStdlibLogger()
+// The default logger logs to standard output with a time prefix, see NewStdlibLogger()
 var DefaultLogger Logger = NewStdlibLogger()
