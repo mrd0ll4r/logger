@@ -48,6 +48,10 @@ func (l *StdlibLogger) SetPrefix(prefix string) {
 	l.logger.SetPrefix(prefix)
 }
 
+func (l *StdlibLogger) Logs(level LogLevel) bool {
+	return l.check(level)
+}
+
 func (l *StdlibLogger) check(level LogLevel) bool {
 	return level >= l.level
 }
