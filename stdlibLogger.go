@@ -14,7 +14,7 @@ type StdlibLogger struct {
 }
 
 // to see if we implement Logger
-var sl Logger = NewStdlibLogger()
+var _ Logger = NewStdlibLogger()
 
 // NewStdlibLogger returns a new StdlibLogger.
 // If the environment variable LOGGER_DISCARD is set, the logger will discard everything (useful for benchmarks)

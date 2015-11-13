@@ -13,7 +13,7 @@ type MultiLogger struct {
 }
 
 // to see if we implement Logger
-var ml Logger = NewMultiLogger(DefaultLogger)
+var _ Logger = NewMultiLogger(DefaultLogger)
 
 // NewMultiLogger wraps the provided loggers into one MultiLogger.
 // The inner loggers should not be accessed while the MultiLogger is in use.
