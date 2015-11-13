@@ -2,6 +2,9 @@ package logger
 
 // SetLevel sets the level for the default logger
 func SetLevel(level LogLevel) {
+	if level < Off || level > NumLevels {
+		panic("Invalid log level")
+	}
 	DefaultLogger.SetLevel(level)
 }
 
