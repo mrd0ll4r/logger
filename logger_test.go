@@ -4,55 +4,40 @@
 package logger
 
 import (
-	"strings"
+	"log"
 	"testing"
 )
 
-func TestAPI(t *testing.T) {
-	l := New()
-	l.SetFlags(0)
-	l.SetPrefix("testing")
+func TestLevels(t *testing.T) {
+	l := New().(*StdlibLogger)
+	l.SetFlags(log.Lshortfile | log.Ldate | log.Ltime)
+	l.Debugln("hello debug")
+	l.Verboseln("hello verbose")
+	l.Infoln("hello info")
+	l.Okln("hello OK")
+	l.Warnln("hello warn")
+}
 
-	debug := 0
-	l.AddHandler(LevelDebug, checkFunc(t, LevelDebug, "test 0", &debug))
-	info := 0
-	l.AddHandler(LevelInfo, checkFunc(t, LevelInfo, "test 1", &info))
-	warn := 0
-	l.AddHandler(LevelWarn, checkFunc(t, LevelWarn, "test 2", &warn))
-	ok := 0
-	l.AddHandler(LevelOK, checkFunc(t, LevelOK, "test 3", &ok))
-
-	l.Debugf("test %d", 0)
-	l.Debugln("test", 0)
-	l.Infof("test %d", 1)
-	l.Infoln("test", 1)
-	l.Warnf("test %d", 2)
-	l.Warnln("test", 2)
-	l.Okf("test %d", 3)
-	l.Okln("test", 3)
-
-	if debug != 2 {
-		t.Errorf("Debug handler called %d != 2 times", debug)
-	}
-	if info != 2 {
-		t.Errorf("Info handler called %d != 2 times", info)
-	}
-	if warn != 2 {
-		t.Errorf("Warn handler called %d != 2 times", warn)
-	}
-	if ok != 2 {
-		t.Errorf("Ok handler called %d != 2 times", ok)
+func BenchmarkLshortfile(b *testing.B) {
+	l := New().(*StdlibLogger)
+	l.SetFlags(log.Lshortfile)
+	for i := 0; i < b.N; i++ {
+		l.Okln("hi")
 	}
 }
 
-func checkFunc(t *testing.T, expectl LogLevel, expectmsg string, counter *int) func(LogLevel, string) {
-	return func(l LogLevel, msg string) {
-		*counter++
-		if l != expectl {
-			t.Errorf("Incorrect message level %d != %d", l, expectl)
-		}
-		if !strings.HasSuffix(msg, expectmsg) {
-			t.Errorf("%q does not end with %q", msg, expectmsg)
-		}
+func BenchmarkBare(b *testing.B) {
+	l := New().(*StdlibLogger)
+	l.SetFlags(0)
+	for i := 0; i < b.N; i++ {
+		l.Okln("hi")
+	}
+}
+
+func BenchmarkLevelTooLowBare(b *testing.B) {
+	l := New().(*StdlibLogger)
+	l.SetFlags(0)
+	for i := 0; i < b.N; i++ {
+		l.Debugln("hi")
 	}
 }

@@ -9,8 +9,6 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"strings"
-	"sync"
 )
 
 type LogLevel int
@@ -22,166 +20,188 @@ const (
 	LevelOK
 	LevelWarn
 	LevelFatal
-	NumLevels
+	NumLevels //can be used to log everything, even if levels are added or removed in the future
 )
 
-// A MessageHandler is called with the log level and message text.
-type MessageHandler func(l LogLevel, msg string)
+type Logger interface {
+	SetLevel(LogLevel)
+	Level() LogLevel
 
-type Logger struct {
-	logger   *log.Logger
-	handlers [NumLevels][]MessageHandler
-	mut      sync.Mutex
+	Debugln(...interface{})
+	Debugf(string, ...interface{})
+
+	Verboseln(...interface{})
+	Verbosef(string, ...interface{})
+
+	Infoln(...interface{})
+	Infof(string, ...interface{})
+
+	Okln(...interface{})
+	Okf(string, ...interface{})
+
+	Warnln(...interface{})
+	Warnf(string, ...interface{})
+
+	Fatalln(...interface{})
+	Fatalf(string, ...interface{})
+}
+
+type StdlibLogger struct {
+	logger *log.Logger
+	level  LogLevel
 }
 
 // The default logger logs to standard output with a time prefix.
-var DefaultLogger = New()
+var DefaultLogger Logger = New()
 
-func New() *Logger {
+func New() Logger {
 	if os.Getenv("LOGGER_DISCARD") != "" {
 		// Hack to completely disable logging, for example when running benchmarks.
-		return &Logger{
+		return &StdlibLogger{
 			logger: log.New(ioutil.Discard, "", 0),
+			level:  NumLevels,
 		}
 	}
 
-	return &Logger{
+	return &StdlibLogger{
 		logger: log.New(os.Stdout, "", log.Ltime),
+		level:  LevelOK,
 	}
 }
 
-// AddHandler registers a new MessageHandler to receive messages with the
-// specified log level or above.
-func (l *Logger) AddHandler(level LogLevel, h MessageHandler) {
-	l.mut.Lock()
-	defer l.mut.Unlock()
-	l.handlers[level] = append(l.handlers[level], h)
+func (l StdlibLogger) Level() LogLevel {
+	return l.level
+}
+
+func (l *StdlibLogger) SetLevel(level LogLevel) {
+	if level < 0 || level > NumLevels {
+		panic("Invalid log level")
+	}
+	l.level = level
 }
 
 // See log.SetFlags
-func (l *Logger) SetFlags(flag int) {
+func (l *StdlibLogger) SetFlags(flag int) {
 	l.logger.SetFlags(flag)
 }
 
 // See log.SetPrefix
-func (l *Logger) SetPrefix(prefix string) {
+func (l *StdlibLogger) SetPrefix(prefix string) {
 	l.logger.SetPrefix(prefix)
 }
 
-func (l *Logger) callHandlers(level LogLevel, s string) {
-	for _, h := range l.handlers[level] {
-		h(level, strings.TrimSpace(s))
-	}
+func (l *StdlibLogger) check(level LogLevel) bool {
+	return level >= l.level
 }
 
 // Debugln logs a line with a DEBUG prefix.
-func (l *Logger) Debugln(vals ...interface{}) {
-	l.mut.Lock()
-	defer l.mut.Unlock()
+func (l *StdlibLogger) Debugln(vals ...interface{}) {
+	if !l.check(LevelDebug) {
+		return
+	}
 	s := fmt.Sprintln(vals...)
 	l.logger.Output(2, "DEBUG: "+s)
-	l.callHandlers(LevelDebug, s)
 }
 
 // Debugf logs a formatted line with a DEBUG prefix.
-func (l *Logger) Debugf(format string, vals ...interface{}) {
-	l.mut.Lock()
-	defer l.mut.Unlock()
+func (l *StdlibLogger) Debugf(format string, vals ...interface{}) {
+	if !l.check(LevelDebug) {
+		return
+	}
 	s := fmt.Sprintf(format, vals...)
 	l.logger.Output(2, "DEBUG: "+s)
-	l.callHandlers(LevelDebug, s)
 }
 
 // Infoln logs a line with a VERBOSE prefix.
-func (l *Logger) Verboseln(vals ...interface{}) {
-	l.mut.Lock()
-	defer l.mut.Unlock()
+func (l *StdlibLogger) Verboseln(vals ...interface{}) {
+	if !l.check(LevelVerbose) {
+		return
+	}
 	s := fmt.Sprintln(vals...)
 	l.logger.Output(2, "VERBOSE: "+s)
-	l.callHandlers(LevelVerbose, s)
 }
 
 // Infof logs a formatted line with a VERBOSE prefix.
-func (l *Logger) Verbosef(format string, vals ...interface{}) {
-	l.mut.Lock()
-	defer l.mut.Unlock()
+func (l *StdlibLogger) Verbosef(format string, vals ...interface{}) {
+	if !l.check(LevelVerbose) {
+		return
+	}
 	s := fmt.Sprintf(format, vals...)
 	l.logger.Output(2, "VERBOSE: "+s)
-	l.callHandlers(LevelVerbose, s)
 }
 
 // Infoln logs a line with an INFO prefix.
-func (l *Logger) Infoln(vals ...interface{}) {
-	l.mut.Lock()
-	defer l.mut.Unlock()
+func (l *StdlibLogger) Infoln(vals ...interface{}) {
+	if !l.check(LevelInfo) {
+		return
+	}
 	s := fmt.Sprintln(vals...)
 	l.logger.Output(2, "INFO: "+s)
-	l.callHandlers(LevelInfo, s)
 }
 
 // Infof logs a formatted line with an INFO prefix.
-func (l *Logger) Infof(format string, vals ...interface{}) {
-	l.mut.Lock()
-	defer l.mut.Unlock()
+func (l *StdlibLogger) Infof(format string, vals ...interface{}) {
+	if !l.check(LevelInfo) {
+		return
+	}
 	s := fmt.Sprintf(format, vals...)
 	l.logger.Output(2, "INFO: "+s)
-	l.callHandlers(LevelInfo, s)
 }
 
 // Okln logs a line with an OK prefix.
-func (l *Logger) Okln(vals ...interface{}) {
-	l.mut.Lock()
-	defer l.mut.Unlock()
+func (l *StdlibLogger) Okln(vals ...interface{}) {
+	if !l.check(LevelOK) {
+		return
+	}
 	s := fmt.Sprintln(vals...)
 	l.logger.Output(2, "OK: "+s)
-	l.callHandlers(LevelOK, s)
 }
 
 // Okf logs a formatted line with an OK prefix.
-func (l *Logger) Okf(format string, vals ...interface{}) {
-	l.mut.Lock()
-	defer l.mut.Unlock()
+func (l *StdlibLogger) Okf(format string, vals ...interface{}) {
+	if !l.check(LevelOK) {
+		return
+	}
 	s := fmt.Sprintf(format, vals...)
 	l.logger.Output(2, "OK: "+s)
-	l.callHandlers(LevelOK, s)
 }
 
 // Warnln logs a formatted line with a WARNING prefix.
-func (l *Logger) Warnln(vals ...interface{}) {
-	l.mut.Lock()
-	defer l.mut.Unlock()
+func (l *StdlibLogger) Warnln(vals ...interface{}) {
+	if !l.check(LevelWarn) {
+		return
+	}
 	s := fmt.Sprintln(vals...)
 	l.logger.Output(2, "WARNING: "+s)
-	l.callHandlers(LevelWarn, s)
 }
 
 // Warnf logs a formatted line with a WARNING prefix.
-func (l *Logger) Warnf(format string, vals ...interface{}) {
-	l.mut.Lock()
-	defer l.mut.Unlock()
+func (l *StdlibLogger) Warnf(format string, vals ...interface{}) {
+	if !l.check(LevelWarn) {
+		return
+	}
 	s := fmt.Sprintf(format, vals...)
 	l.logger.Output(2, "WARNING: "+s)
-	l.callHandlers(LevelWarn, s)
 }
 
 // Fatalln logs a line with a FATAL prefix and exits the process with exit
 // code 1.
-func (l *Logger) Fatalln(vals ...interface{}) {
-	l.mut.Lock()
-	defer l.mut.Unlock()
+func (l *StdlibLogger) Fatalln(vals ...interface{}) {
+	if !l.check(LevelFatal) {
+		return
+	}
 	s := fmt.Sprintln(vals...)
 	l.logger.Output(2, "FATAL: "+s)
-	l.callHandlers(LevelFatal, s)
 	os.Exit(1)
 }
 
 // Fatalf logs a formatted line with a FATAL prefix and exits the process with
 // exit code 1.
-func (l *Logger) Fatalf(format string, vals ...interface{}) {
-	l.mut.Lock()
-	defer l.mut.Unlock()
+func (l *StdlibLogger) Fatalf(format string, vals ...interface{}) {
+	if !l.check(LevelFatal) {
+		return
+	}
 	s := fmt.Sprintf(format, vals...)
 	l.logger.Output(2, "FATAL: "+s)
-	l.callHandlers(LevelFatal, s)
 	os.Exit(1)
 }
