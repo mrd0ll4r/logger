@@ -13,6 +13,9 @@ type StdlibLogger struct {
 	level  LogLevel
 }
 
+// to see if we implement Logger
+var sl Logger = NewStdlibLogger()
+
 // NewStdlibLogger returns a new StdlibLogger.
 // If the environment variable LOGGER_DISCARD is set, the logger will discard everything (useful for benchmarks)
 func NewStdlibLogger() *StdlibLogger {
