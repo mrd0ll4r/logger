@@ -31,7 +31,7 @@ func NewStdlibLogger() *StdlibLogger {
 }
 
 // See Logger.Level
-func (l StdlibLogger) Level() LogLevel {
+func (l *StdlibLogger) Level() LogLevel {
 	return l.level
 }
 
