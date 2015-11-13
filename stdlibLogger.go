@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
@@ -39,6 +40,11 @@ func (l *StdlibLogger) SetLevel(level LogLevel) {
 		panic("Invalid log level")
 	}
 	l.level = level
+}
+
+// See log.SetOutput
+func (l *StdlibLogger) SetOutput(w io.Writer) {
+	l.logger.SetOutput(w)
 }
 
 // See log.SetFlags
