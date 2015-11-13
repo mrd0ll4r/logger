@@ -33,6 +33,7 @@ func NewStdlibLogger() *StdlibLogger {
 	}
 }
 
+// See Logger.SetLevel
 func (l *StdlibLogger) SetLevel(level LogLevel) {
 	if level < Off || level > NumLevels {
 		panic("Invalid log level")
@@ -149,8 +150,7 @@ func (l *StdlibLogger) Warnf(format string, vals ...interface{}) {
 	l.logger.Output(2, "WARNING: "+s)
 }
 
-// Fatalln logs a line with a FATAL prefix and exits the process with exit
-// code 1.
+// Fatalln logs a line with a FATAL prefix and exits the process with exit code 1.
 func (l *StdlibLogger) Fatalln(vals ...interface{}) {
 	if !l.check(LevelFatal) {
 		return
@@ -160,8 +160,7 @@ func (l *StdlibLogger) Fatalln(vals ...interface{}) {
 	os.Exit(1)
 }
 
-// Fatalf logs a formatted line with a FATAL prefix and exits the process with
-// exit code 1.
+// Fatalf logs a formatted line with a FATAL prefix and exits the process with exit code 1.
 func (l *StdlibLogger) Fatalf(format string, vals ...interface{}) {
 	if !l.check(LevelFatal) {
 		return

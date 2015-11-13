@@ -7,6 +7,7 @@ package logger
 // LogLevel is a level of logging
 type LogLevel int
 
+// The log levels
 const (
 	Off LogLevel = iota // can be used to log nothing
 	LevelDebug
@@ -62,5 +63,5 @@ type Logger interface {
 	Fatalf(string, ...interface{})
 }
 
-// The default logger logs to standard output with a time prefix, see NewStdlibLogger()
+// DefaultLogger logs to standard output with a time prefix, see NewStdlibLogger()
 var DefaultLogger Logger = NewStdlibLogger()
