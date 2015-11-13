@@ -14,13 +14,14 @@ import (
 type LogLevel int
 
 const (
-	LevelDebug LogLevel = iota
+	Off LogLevel = iota // can be used to log nothing
+	LevelDebug
 	LevelVerbose
 	LevelInfo
 	LevelOK
 	LevelWarn
 	LevelFatal
-	NumLevels //can be used to log everything, even if levels are added or removed in the future
+	NumLevels // can be used to log everything, even if levels are added or removed in the future
 )
 
 type Logger interface {
@@ -59,7 +60,7 @@ func New() Logger {
 		// Hack to completely disable logging, for example when running benchmarks.
 		return &StdlibLogger{
 			logger: log.New(ioutil.Discard, "", 0),
-			level:  NumLevels,
+			level:  Off,
 		}
 	}
 

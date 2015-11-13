@@ -18,9 +18,12 @@ func TestLevels(t *testing.T) {
 	l.Warnln("hello warn")
 }
 
+// All benchmarks should be ran with LOGGER_DISCARD="<non-empty>", to redirect logging to ioutil.Discard
+
 func BenchmarkLshortfile(b *testing.B) {
 	l := New().(*StdlibLogger)
 	l.SetFlags(log.Lshortfile)
+	l.SetLevel(LevelOK)
 	for i := 0; i < b.N; i++ {
 		l.Okln("hi")
 	}
@@ -29,6 +32,7 @@ func BenchmarkLshortfile(b *testing.B) {
 func BenchmarkBare(b *testing.B) {
 	l := New().(*StdlibLogger)
 	l.SetFlags(0)
+	l.SetLevel(LevelOK)
 	for i := 0; i < b.N; i++ {
 		l.Okln("hi")
 	}
@@ -37,6 +41,7 @@ func BenchmarkBare(b *testing.B) {
 func BenchmarkLevelTooLowBare(b *testing.B) {
 	l := New().(*StdlibLogger)
 	l.SetFlags(0)
+	l.SetLevel(LevelOK)
 	for i := 0; i < b.N; i++ {
 		l.Debugln("hi")
 	}
