@@ -53,16 +53,12 @@ func (l *StdlibLogger) SetPrefix(prefix string) {
 
 // See Logger.Logs
 func (l *StdlibLogger) Logs(level LogLevel) bool {
-	return l.check(level)
-}
-
-func (l *StdlibLogger) check(level LogLevel) bool {
 	return level >= l.level
 }
 
 // Debugln logs a line with a DEBUG prefix.
 func (l *StdlibLogger) Debugln(vals ...interface{}) {
-	if !l.check(LevelDebug) {
+	if !l.Logs(LevelDebug) {
 		return
 	}
 	s := fmt.Sprintln(vals...)
@@ -71,7 +67,7 @@ func (l *StdlibLogger) Debugln(vals ...interface{}) {
 
 // Debugf logs a formatted line with a DEBUG prefix.
 func (l *StdlibLogger) Debugf(format string, vals ...interface{}) {
-	if !l.check(LevelDebug) {
+	if !l.Logs(LevelDebug) {
 		return
 	}
 	s := fmt.Sprintf(format, vals...)
@@ -80,7 +76,7 @@ func (l *StdlibLogger) Debugf(format string, vals ...interface{}) {
 
 // Infoln logs a line with a VERBOSE prefix.
 func (l *StdlibLogger) Verboseln(vals ...interface{}) {
-	if !l.check(LevelVerbose) {
+	if !l.Logs(LevelVerbose) {
 		return
 	}
 	s := fmt.Sprintln(vals...)
@@ -89,7 +85,7 @@ func (l *StdlibLogger) Verboseln(vals ...interface{}) {
 
 // Infof logs a formatted line with a VERBOSE prefix.
 func (l *StdlibLogger) Verbosef(format string, vals ...interface{}) {
-	if !l.check(LevelVerbose) {
+	if !l.Logs(LevelVerbose) {
 		return
 	}
 	s := fmt.Sprintf(format, vals...)
@@ -98,7 +94,7 @@ func (l *StdlibLogger) Verbosef(format string, vals ...interface{}) {
 
 // Infoln logs a line with an INFO prefix.
 func (l *StdlibLogger) Infoln(vals ...interface{}) {
-	if !l.check(LevelInfo) {
+	if !l.Logs(LevelInfo) {
 		return
 	}
 	s := fmt.Sprintln(vals...)
@@ -107,7 +103,7 @@ func (l *StdlibLogger) Infoln(vals ...interface{}) {
 
 // Infof logs a formatted line with an INFO prefix.
 func (l *StdlibLogger) Infof(format string, vals ...interface{}) {
-	if !l.check(LevelInfo) {
+	if !l.Logs(LevelInfo) {
 		return
 	}
 	s := fmt.Sprintf(format, vals...)
@@ -116,7 +112,7 @@ func (l *StdlibLogger) Infof(format string, vals ...interface{}) {
 
 // Okln logs a line with an OK prefix.
 func (l *StdlibLogger) Okln(vals ...interface{}) {
-	if !l.check(LevelOK) {
+	if !l.Logs(LevelOK) {
 		return
 	}
 	s := fmt.Sprintln(vals...)
@@ -125,7 +121,7 @@ func (l *StdlibLogger) Okln(vals ...interface{}) {
 
 // Okf logs a formatted line with an OK prefix.
 func (l *StdlibLogger) Okf(format string, vals ...interface{}) {
-	if !l.check(LevelOK) {
+	if !l.Logs(LevelOK) {
 		return
 	}
 	s := fmt.Sprintf(format, vals...)
@@ -134,7 +130,7 @@ func (l *StdlibLogger) Okf(format string, vals ...interface{}) {
 
 // Warnln logs a line with a WARNING prefix.
 func (l *StdlibLogger) Warnln(vals ...interface{}) {
-	if !l.check(LevelWarn) {
+	if !l.Logs(LevelWarn) {
 		return
 	}
 	s := fmt.Sprintln(vals...)
@@ -143,7 +139,7 @@ func (l *StdlibLogger) Warnln(vals ...interface{}) {
 
 // Warnf logs a formatted line with a WARNING prefix.
 func (l *StdlibLogger) Warnf(format string, vals ...interface{}) {
-	if !l.check(LevelWarn) {
+	if !l.Logs(LevelWarn) {
 		return
 	}
 	s := fmt.Sprintf(format, vals...)
@@ -152,7 +148,7 @@ func (l *StdlibLogger) Warnf(format string, vals ...interface{}) {
 
 // Fatalln logs a line with a FATAL prefix and exits the process with exit code 1.
 func (l *StdlibLogger) Fatalln(vals ...interface{}) {
-	if !l.check(LevelFatal) {
+	if !l.Logs(LevelFatal) {
 		return
 	}
 	s := fmt.Sprintln(vals...)
@@ -162,7 +158,7 @@ func (l *StdlibLogger) Fatalln(vals ...interface{}) {
 
 // Fatalf logs a formatted line with a FATAL prefix and exits the process with exit code 1.
 func (l *StdlibLogger) Fatalf(format string, vals ...interface{}) {
-	if !l.check(LevelFatal) {
+	if !l.Logs(LevelFatal) {
 		return
 	}
 	s := fmt.Sprintf(format, vals...)
