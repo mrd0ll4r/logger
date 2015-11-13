@@ -17,7 +17,7 @@ type StdlibLogger struct {
 // to see if we implement Logger
 var _ Logger = NewStdlibLogger()
 
-// NewStdlibLogger returns a new StdlibLogger.
+// NewStdlibLogger returns a new StdlibLogger that logs to Stdout with a time prefix.
 // If the environment variable LOGGER_DISCARD is set, the logger will discard everything (useful for benchmarks)
 func NewStdlibLogger() *StdlibLogger {
 	if os.Getenv("LOGGER_DISCARD") != "" {
