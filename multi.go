@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"os"
 	"sync"
 )
 
@@ -18,12 +17,16 @@ var _ Logger = NewMultiLogger(DefaultLogger)
 // NewMultiLogger wraps the provided loggers into one MultiLogger.
 // The inner loggers should not be accessed while the MultiLogger is in use.
 func NewMultiLogger(loggers ...Logger) *MultiLogger {
+	if len(loggers) < 1 {
+		panic("MultiLogger: No loggers provided")
+	}
 	return &MultiLogger{
 		l:     loggers,
 		level: LevelOK,
 	}
 }
 
+// See Logger.SetLevel
 func (m *MultiLogger) SetLevel(level LogLevel) {
 	if level < Off || level > NumLevels {
 		panic("Invalid log level")
@@ -36,6 +39,7 @@ func (m *MultiLogger) SetLevel(level LogLevel) {
 	m.level = level
 }
 
+// See Logger.Logs
 func (m *MultiLogger) Logs(level LogLevel) bool {
 	return level <= m.level
 }
@@ -168,16 +172,12 @@ func (m *MultiLogger) Fatalln(val ...interface{}) {
 	}
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	if len(m.l) < 1 {
-		os.Exit(1)
-		return
-	} else {
-		first := m.l[0]
-		for _, l := range m.l[1:] {
-			l.Warnln(append([]interface{}{"[MultiLogger-FATAL]:"}, val...))
-		}
-		first.Fatalln(val)
+	first := m.l[0]
+	for _, l := range m.l[1:] {
+		l.Warnln(append([]interface{}{"[MultiLogger-FATAL]:"}, val...))
 	}
+	first.Fatalln(val)
+
 }
 
 // Fatalf calls Warnf on all inner loggers except for the first, including a [MultiLogger-FATAL] tag.
@@ -188,14 +188,10 @@ func (m *MultiLogger) Fatalf(format string, val ...interface{}) {
 	}
 	m.mu.Lock()
 	defer m.mu.Unlock()
-	if len(m.l) < 1 {
-		os.Exit(1)
-		return
-	} else {
-		first := m.l[0]
-		for _, l := range m.l[1:] {
-			l.Warnf("[MultiLogger-FATAL]: "+format, val...)
-		}
-		first.Fatalf(format, val)
+	first := m.l[0]
+	for _, l := range m.l[1:] {
+		l.Warnf("[MultiLogger-FATAL]: "+format, val...)
 	}
+	first.Fatalf(format, val)
+
 }
