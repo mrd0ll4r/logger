@@ -5,11 +5,6 @@ func SetLevel(level LogLevel) {
 	DefaultLogger.SetLevel(level)
 }
 
-// Level returns the level of the default logger
-func Level() LogLevel {
-	return DefaultLogger.Level()
-}
-
 // Debugln calls Debugln on the default logger
 func Debugln(val ...interface{}) {
 	DefaultLogger.Debugln(val)

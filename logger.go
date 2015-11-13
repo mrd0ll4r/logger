@@ -23,8 +23,6 @@ const (
 type Logger interface {
 	// SetLevel instructs the logger to log everything above and including the provided level
 	SetLevel(LogLevel)
-	// Level returns the current level
-	Level() LogLevel
 	// Logs returns whether this logger logs the specified level
 	Logs(LogLevel) bool
 

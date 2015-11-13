@@ -33,11 +33,6 @@ func NewStdlibLogger() *StdlibLogger {
 	}
 }
 
-// See Logger.Level
-func (l *StdlibLogger) Level() LogLevel {
-	return l.level
-}
-
 func (l *StdlibLogger) SetLevel(level LogLevel) {
 	if level < 0 || level > NumLevels {
 		panic("Invalid log level")

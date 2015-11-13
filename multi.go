@@ -33,10 +33,6 @@ func (m *MultiLogger) SetLevel(level LogLevel) {
 	m.level = level
 }
 
-func (m *MultiLogger) Level() LogLevel {
-	return m.level
-}
-
 func (m *MultiLogger) Logs(level LogLevel) bool {
 	return level <= m.level
 }
