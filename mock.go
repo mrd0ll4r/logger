@@ -5,6 +5,7 @@ import (
 	"testing"
 )
 
+// mock is a mock logger that just counts how often <Level>(ln|f) was called
 type mock struct {
 	lnCount map[LogLevel]int
 	fCount  map[LogLevel]int
