@@ -33,34 +33,34 @@ type Logger interface {
 	Logs(LogLevel) bool
 
 	// Debugln logs a debug-marked line
-	Debugln(...interface{})
+	Debugln(val ...interface{})
 	// Debugf logs a debug-marked formatted line
-	Debugf(string, ...interface{})
+	Debugf(format string, val ...interface{})
 
 	// Verboseln logs a verbose-marked line
-	Verboseln(...interface{})
+	Verboseln(val ...interface{})
 	// Verbosef logs a verbose-marked formatted line
-	Verbosef(string, ...interface{})
+	Verbosef(format string, val ...interface{})
 
 	// Infoln logs an info-marked line
-	Infoln(...interface{})
+	Infoln(val ...interface{})
 	// Infof logs an info-marked formatted line
-	Infof(string, ...interface{})
+	Infof(format string, val ...interface{})
 
 	// Okln logs an OK-marked line
-	Okln(...interface{})
+	Okln(val ...interface{})
 	// Okf logs an OK-marked formatted line
-	Okf(string, ...interface{})
+	Okf(format string, val ...interface{})
 
 	// Warnln logs a warn-marked line
-	Warnln(...interface{})
+	Warnln(val ...interface{})
 	// Warnf logs a warn-marked formatted line
-	Warnf(string, ...interface{})
+	Warnf(format string, val ...interface{})
 
 	// Fatalln logs a fatal-marked line and exits the program with return code 1
-	Fatalln(...interface{})
+	Fatalln(val ...interface{})
 	// Fatalf logs a fatal-marked formatted line and exits the program with return code 1
-	Fatalf(string, ...interface{})
+	Fatalf(format string, val ...interface{})
 }
 
 // DefaultLogger logs to standard output with a time prefix, see NewStdlibLogger()
