@@ -49,7 +49,7 @@ func (p *Selective) Logs(level LogLevel) bool {
 
 // Enable enables a level for logging
 func (p *Selective) Enable(level LogLevel) {
-	if level < Off || level > NumLevels {
+	if level < Everything || level > Off {
 		panic("Invalid log level")
 	}
 	p.mu.Lock()
@@ -59,7 +59,7 @@ func (p *Selective) Enable(level LogLevel) {
 
 // Disable disables a level for logging
 func (p *Selective) Disable(level LogLevel) {
-	if level < Off || level > NumLevels {
+	if level < Everything || level > Off {
 		panic("Invalid log level")
 	}
 	p.mu.Lock()

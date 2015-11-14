@@ -9,14 +9,14 @@ type LogLevel int
 
 // The log levels
 const (
-	Off LogLevel = iota // can be used to log nothing
+	Everything LogLevel = iota // can be used to log everything
 	LevelDebug
 	LevelVerbose
 	LevelInfo
 	LevelOK
 	LevelWarn
 	LevelFatal
-	NumLevels // can be used to log everything, even if levels are added or removed in the future
+	Off // can be used to log nothig, even if levels are added or removed in the future
 )
 
 // Levels returns a slice of all Levels (excluding Off and NumLevels) ordered from fine to severe (Debug to Fatal)

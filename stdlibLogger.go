@@ -24,7 +24,7 @@ func NewStdlibLogger() *StdlibLogger {
 		// Hack to completely disable logging, for example when running benchmarks.
 		return &StdlibLogger{
 			logger: log.New(ioutil.Discard, "", 0),
-			level:  Off,
+			level:  Everything,
 		}
 	}
 
@@ -36,7 +36,7 @@ func NewStdlibLogger() *StdlibLogger {
 
 // See Logger.SetLevel
 func (l *StdlibLogger) SetLevel(level LogLevel) {
-	if level < Off || level > NumLevels {
+	if level < Everything || level > Off {
 		panic("Invalid log level")
 	}
 	l.level = level

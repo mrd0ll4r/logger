@@ -28,7 +28,7 @@ func NewMultiLogger(loggers ...Logger) *MultiLogger {
 
 // See Logger.SetLevel
 func (m *MultiLogger) SetLevel(level LogLevel) {
-	if level < Off || level > NumLevels {
+	if level < Everything || level > Off {
 		panic("Invalid log level")
 	}
 	m.level = level
