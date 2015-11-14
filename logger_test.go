@@ -20,7 +20,7 @@ func TestLevels(t *testing.T) {
 
 // All benchmarks should be ran with LOGGER_DISCARD="<non-empty>", to redirect logging to ioutil.Discard
 
-func BenchmarkLshortfile(b *testing.B) {
+func BenchmarkLshortfileLn(b *testing.B) {
 	l := NewStdlibLogger()
 	l.SetFlags(log.Lshortfile)
 	l.SetLevel(LevelOK)
@@ -30,7 +30,7 @@ func BenchmarkLshortfile(b *testing.B) {
 	}
 }
 
-func BenchmarkBare(b *testing.B) {
+func BenchmarkNoFlagLn(b *testing.B) {
 	l := NewStdlibLogger()
 	l.SetFlags(0)
 	l.SetLevel(LevelOK)
@@ -40,17 +40,7 @@ func BenchmarkBare(b *testing.B) {
 	}
 }
 
-func BenchmarkLevelTooLowBare(b *testing.B) {
-	l := NewStdlibLogger()
-	l.SetFlags(0)
-	l.SetLevel(LevelOK)
-	s := "hi"
-	for i := 0; i < b.N; i++ {
-		l.Debugln(s)
-	}
-}
-
-func BenchmarkEmptyFormat(b *testing.B) {
+func BenchmarkNoFlagF(b *testing.B) {
 	l := NewStdlibLogger()
 	l.SetFlags(0)
 	l.SetLevel(LevelOK)
@@ -58,5 +48,15 @@ func BenchmarkEmptyFormat(b *testing.B) {
 	s1 := "hi"
 	for i := 0; i < b.N; i++ {
 		l.Okf(s, s1)
+	}
+}
+
+func BenchmarkLevelTooLow(b *testing.B) {
+	l := NewStdlibLogger()
+	l.SetFlags(0)
+	l.SetLevel(LevelOK)
+	s := "hi"
+	for i := 0; i < b.N; i++ {
+		l.Debugln(s)
 	}
 }
