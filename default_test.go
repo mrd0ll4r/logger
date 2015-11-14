@@ -17,6 +17,10 @@ func TestDefaultFuncs(t *testing.T) {
 		t.Errorf("Unexpected level: %d, should be %d", m.Level(), Everything)
 	}
 
+	if !Logs(Everything) {
+		t.Errorf("DefaultLogger does not log Everything after it was instructed to")
+	}
+
 	m.checkLnCount(t, 0, 0, 0, 0, 0, 0)
 	m.checkFCount(t, 0, 0, 0, 0, 0, 0)
 

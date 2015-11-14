@@ -8,6 +8,11 @@ func SetLevel(level LogLevel) {
 	DefaultLogger.SetLevel(level)
 }
 
+// Logs calls Logs on the default logger
+func Logs(level LogLevel) bool {
+	return DefaultLogger.Logs(level)
+}
+
 // Debugln calls Debugln on the default logger
 func Debugln(val ...interface{}) {
 	DefaultLogger.Debugln(val)
