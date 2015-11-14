@@ -1,6 +1,3 @@
-// Copyright (C) 2014 Jakob Borg. All rights reserved. Use of this source code
-// is governed by an MIT-style license that can be found in the LICENSE file.
-
 // Package logger contains a level-based logger interface and an implementation of that interface using the stdlib log
 package logger
 
