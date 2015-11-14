@@ -8,6 +8,7 @@ import (
 type mock struct {
 	lnCount map[LogLevel]int
 	fCount  map[LogLevel]int
+	level   LogLevel
 	mu      sync.Mutex
 }
 
@@ -65,12 +66,14 @@ func (m *mock) checkFCount(t *testing.T, debug, verbose, info, ok, warn, fatal i
 }
 
 func (m *mock) Logs(level LogLevel) bool {
-	return level >= LevelOK
+	return level >= m.level
 }
 
-func (m *mock) SetLevel(LogLevel) {}
+func (m *mock) SetLevel(level LogLevel) {
+	m.level = level
+}
 
-func (m *mock) Level() LogLevel { return LevelOK }
+func (m *mock) Level() LogLevel { return m.level }
 
 func (m *mock) Debugln(val ...interface{}) {
 	m.mu.Lock()
