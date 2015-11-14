@@ -7,16 +7,19 @@ func TestSelective(t *testing.T) {
 	l := NewSelective(m)
 	s := "hi"
 
+	// check base state
 	m.checkLnCount(t, 0, 0, 0, 0, 0, 0)
 	m.checkFCount(t, 0, 0, 0, 0, 0, 0)
 
 	l.SetLevel(Off)
-
+	// check disable everything
 	l.Fatalln(s)
 	m.checkLnCount(t, 0, 0, 0, 0, 0, 0)
 	m.checkFCount(t, 0, 0, 0, 0, 0, 0)
 
 	l.Enable(LevelOK)
+
+	// enabled should be: OK
 
 	l.Debugln(s)
 	l.Verboseln(s)
@@ -30,6 +33,8 @@ func TestSelective(t *testing.T) {
 
 	l.Disable(LevelOK)
 	l.Enable(LevelInfo)
+
+	// enabled should be: Info
 
 	l.Debugf(s, s)
 	l.Verbosef(s, s)
