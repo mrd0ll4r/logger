@@ -1,6 +1,9 @@
 package logger
 
-import "sync"
+import (
+	"sync"
+	"testing"
+)
 
 type mock struct {
 	lnCount map[LogLevel]int
@@ -27,6 +30,38 @@ func (m *mock) FCount(level LogLevel) int {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	return m.fCount[level]
+}
+
+func checkLnCount(t *testing.T, m *mock, debug, verbose, info, ok, warn, fatal int) {
+	if !(m.LnCount(LevelDebug) == debug &&
+		m.LnCount(LevelVerbose) == verbose &&
+		m.LnCount(LevelOK) == ok &&
+		m.LnCount(LevelWarn) == warn &&
+		m.LnCount(LevelFatal) == fatal) {
+		t.Errorf("LnCount is wrong, should be %d,%d,%d,%d,%d,%d - is %d,%d,%d,%d,%d,%d", debug, verbose, info, ok, warn, fatal,
+			m.LnCount(LevelDebug),
+			m.LnCount(LevelVerbose),
+			m.LnCount(LevelInfo),
+			m.LnCount(LevelOK),
+			m.LnCount(LevelWarn),
+			m.LnCount(LevelFatal))
+	}
+}
+
+func checkFCount(t *testing.T, m *mock, debug, verbose, info, ok, warn, fatal int) {
+	if !(m.FCount(LevelDebug) == debug &&
+		m.FCount(LevelVerbose) == verbose &&
+		m.FCount(LevelOK) == ok &&
+		m.FCount(LevelWarn) == warn &&
+		m.FCount(LevelFatal) == fatal) {
+		t.Errorf("FCount is wrong, should be %d,%d,%d,%d,%d,%d - is %d,%d,%d,%d,%d,%d", debug, verbose, info, ok, warn, fatal,
+			m.FCount(LevelDebug),
+			m.FCount(LevelVerbose),
+			m.FCount(LevelInfo),
+			m.FCount(LevelOK),
+			m.FCount(LevelWarn),
+			m.FCount(LevelFatal))
+	}
 }
 
 func (m *mock) Logs(level LogLevel) bool {
