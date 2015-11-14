@@ -13,7 +13,18 @@ func TestSelective(t *testing.T) {
 
 	l.SetLevel(Off)
 	// check disable everything
+	l.Debugln(s)
+	l.Debugf(s, s)
+	l.Verboseln(s)
+	l.Verbosef(s, s)
+	l.Infoln(s)
+	l.Infof(s, s)
+	l.Okln(s)
+	l.Okf(s, s)
+	l.Warnln(s)
+	l.Warnf(s, s)
 	l.Fatalln(s)
+	l.Fatalf(s)
 	m.checkLnCount(t, 0, 0, 0, 0, 0, 0)
 	m.checkFCount(t, 0, 0, 0, 0, 0, 0)
 
@@ -60,5 +71,4 @@ func TestSelective(t *testing.T) {
 
 	m.checkLnCount(t, 0, 0, 1, 1, 1, 1)
 	m.checkFCount(t, 0, 0, 1, 0, 0, 0)
-
 }

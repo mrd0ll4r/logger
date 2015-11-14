@@ -49,11 +49,37 @@ func TestMulti(t *testing.T) {
 	l.SetLevel(LevelWarn)
 
 	// should not log
+	l.Debugln()
+	l.Verboseln()
 	l.Infoln()
+	l.Okln()
+
+	l.Debugf("")
+	l.Verbosef("")
+	l.Infof("")
+	l.Okf("")
 
 	m1.checkLnCount(t, 1, 0, 0, 0, 0, 0)
 	m1.checkFCount(t, 0, 1, 0, 0, 0, 0)
 	m2.checkLnCount(t, 1, 0, 0, 0, 0, 0)
 	m2.checkFCount(t, 0, 1, 0, 0, 0, 0)
 
+	l.SetLevel(Off)
+
+	l.Debugln()
+	l.Debugf("")
+	l.Verboseln()
+	l.Verbosef("")
+	l.Infoln()
+	l.Infof("")
+	l.Okln()
+	l.Okf("")
+	l.Warnln()
+	l.Warnf("")
+	l.Fatalln()
+
+	m1.checkLnCount(t, 1, 0, 0, 0, 0, 0)
+	m1.checkFCount(t, 0, 1, 0, 0, 0, 0)
+	m2.checkLnCount(t, 1, 0, 0, 0, 0, 0)
+	m2.checkFCount(t, 0, 1, 0, 0, 0, 0)
 }
