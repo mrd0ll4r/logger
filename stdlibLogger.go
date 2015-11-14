@@ -28,7 +28,7 @@ func NewStdlibLogger() *StdlibLogger {
 		// Hack to completely disable logging, for example when running benchmarks.
 		return &StdlibLogger{
 			logger: log.New(ioutil.Discard, "", 0),
-			level:  Everything,
+			level:  Off,
 		}
 	}
 
