@@ -32,7 +32,7 @@ func (m *mock) FCount(level LogLevel) int {
 	return m.fCount[level]
 }
 
-func checkLnCount(t *testing.T, m *mock, debug, verbose, info, ok, warn, fatal int) {
+func (m *mock) checkLnCount(t *testing.T, debug, verbose, info, ok, warn, fatal int) {
 	if !(m.LnCount(LevelDebug) == debug &&
 		m.LnCount(LevelVerbose) == verbose &&
 		m.LnCount(LevelOK) == ok &&
@@ -48,7 +48,7 @@ func checkLnCount(t *testing.T, m *mock, debug, verbose, info, ok, warn, fatal i
 	}
 }
 
-func checkFCount(t *testing.T, m *mock, debug, verbose, info, ok, warn, fatal int) {
+func (m *mock) checkFCount(t *testing.T, debug, verbose, info, ok, warn, fatal int) {
 	if !(m.FCount(LevelDebug) == debug &&
 		m.FCount(LevelVerbose) == verbose &&
 		m.FCount(LevelOK) == ok &&
