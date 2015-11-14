@@ -69,4 +69,13 @@ func TestMock(t *testing.T) {
 	m.checkLnCount(t, 1, 1, 1, 1, 1, 1)
 	m.checkFCount(t, 1, 1, 1, 1, 1, 1)
 
+	m.SetLevel(Off)
+	if m.Level() != Off {
+		t.Errorf("Unexpected level: %d, should be %d", m.Level(), Off)
+	}
+
+	m.SetLevel(Everything)
+	if m.Level() != Everything {
+		t.Errorf("Unexpected level: %d, should be %d", m.Level(), Everything)
+	}
 }
