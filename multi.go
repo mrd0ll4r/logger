@@ -31,11 +31,6 @@ func (m *MultiLogger) SetLevel(level LogLevel) {
 	if level < Off || level > NumLevels {
 		panic("Invalid log level")
 	}
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	for _, l := range m.l {
-		l.SetLevel(level)
-	}
 	m.level = level
 }
 
