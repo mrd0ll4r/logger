@@ -16,6 +16,7 @@ var _ Logger = NewMultiLogger(DefaultLogger)
 
 // NewMultiLogger wraps the provided loggers into one MultiLogger.
 // The inner loggers should not be accessed while the MultiLogger is in use.
+// See SetLevel and PropagateLevel for specific level settings
 func NewMultiLogger(loggers ...Logger) *MultiLogger {
 	if len(loggers) < 1 {
 		panic("MultiLogger: No loggers provided")
@@ -26,7 +27,16 @@ func NewMultiLogger(loggers ...Logger) *MultiLogger {
 	}
 }
 
-// See Logger.SetLevel
+// PropagateLevel propagates this loggers level to all underlying loggers
+func (m *MultiLogger) PropagateLevel() {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	for _, v := range m.l {
+		v.SetLevel(m.level)
+	}
+}
+
+// SetLevel sets the level for this logger only, it does not change the underlying loggers.
 func (m *MultiLogger) SetLevel(level LogLevel) {
 	if level < Everything || level > Off {
 		panic("Invalid log level")
