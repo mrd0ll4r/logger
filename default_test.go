@@ -5,8 +5,17 @@ import "testing"
 func TestDefaultFuncs(t *testing.T) {
 	m := newMock()
 	DefaultLogger = m
-
 	s := "hi"
+
+	SetLevel(Off)
+	if m.Level() != Off {
+		t.Errorf("Unexpected level: %d, should be %d", m.Level(), Off)
+	}
+
+	SetLevel(Everything)
+	if m.Level() != Everything {
+		t.Errorf("Unexpected level: %d, should be %d", m.Level(), Everything)
+	}
 
 	m.checkLnCount(t, 0, 0, 0, 0, 0, 0)
 	m.checkFCount(t, 0, 0, 0, 0, 0, 0)
