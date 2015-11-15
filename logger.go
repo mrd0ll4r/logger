@@ -1,3 +1,6 @@
+// Copyright (C) 2014-2015 Jakob Borg & mrd0ll4r. All rights reserved. Use of this source code
+// is governed by the MIT license that can be found in the LICENSE file.
+
 // Package logger contains a level-based logger interface and an implementation of that interface using the stdlib log
 package logger
 

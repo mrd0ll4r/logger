@@ -1,3 +1,6 @@
+// Copyright (C) 2014 mrd0ll4r. All rights reserved. Use of this source code
+// is governed by the MIT license that can be found in the LICENSE file.
+
 package logger
 
 // SetLevel sets the level for the default logger

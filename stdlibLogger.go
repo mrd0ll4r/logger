@@ -1,6 +1,6 @@
 // Most of this file is taken from github.com/calmh/logger and therefore:
-// Copyright (C) 2014 Jakob Borg. All rights reserved. Use of this source code
-// is governed by an MIT-style license that can be found in the LICENSE-calmh file.
+// Copyright (C) 2014,2015 Jakob Borg & mrd0ll4r. All rights reserved. Use of this source code
+// is governed by an MIT-style license that can be found in the LICENSE file.
 
 package logger
 
