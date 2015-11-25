@@ -70,6 +70,22 @@ func (p *Selective) Disable(level LogLevel) {
 	p.levels[level] = false
 }
 
+// Traceln calls Traceln on the inner logger if this Selective is enabled for that level
+func (p *Selective) Traceln(val ...interface{}) {
+	if !p.Logs(LevelTrace) {
+		return
+	}
+	p.l.Traceln(val)
+}
+
+// Tracef calls Tracef on the inner logger if this Selective is enabled for that level
+func (p *Selective) Tracef(format string, val ...interface{}) {
+	if !p.Logs(LevelTrace) {
+		return
+	}
+	p.l.Tracef(format, val)
+}
+
 // Debugln calls Debugln on the inner logger if this Selective is enabled for that level
 func (p *Selective) Debugln(val ...interface{}) {
 	if !p.Logs(LevelDebug) {
@@ -86,22 +102,6 @@ func (p *Selective) Debugf(format string, val ...interface{}) {
 	p.l.Debugf(format, val)
 }
 
-// Verboseln calls Verboseln on the inner logger if this Selective is enabled for that level
-func (p *Selective) Verboseln(val ...interface{}) {
-	if !p.Logs(LevelVerbose) {
-		return
-	}
-	p.l.Verboseln(val)
-}
-
-// Verbosef calls Verbosef on the inner logger if this Selective is enabled for that level
-func (p *Selective) Verbosef(format string, val ...interface{}) {
-	if !p.Logs(LevelVerbose) {
-		return
-	}
-	p.l.Verbosef(format, val)
-}
-
 // Infoln calls Infoln on the inner logger if this Selective is enabled for that level
 func (p *Selective) Infoln(val ...interface{}) {
 	if !p.Logs(LevelInfo) {
@@ -116,22 +116,6 @@ func (p *Selective) Infof(format string, val ...interface{}) {
 		return
 	}
 	p.l.Infof(format, val)
-}
-
-// Okln calls Okln on the inner logger if this Selective is enabled for that level
-func (p *Selective) Okln(val ...interface{}) {
-	if !p.Logs(LevelOK) {
-		return
-	}
-	p.l.Okln(val)
-}
-
-// Okf calls Okf on the inner logger if this Selective is enabled for that level
-func (p *Selective) Okf(format string, val ...interface{}) {
-	if !p.Logs(LevelOK) {
-		return
-	}
-	p.l.Okf(format, val)
 }
 
 // Warnln calls Warnln on the inner logger if this Selective is enabled for that level

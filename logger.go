@@ -10,18 +10,17 @@ type LogLevel int
 // The log levels
 const (
 	Everything LogLevel = iota // can be used to log everything
+	LevelTrace
 	LevelDebug
-	LevelVerbose
 	LevelInfo
-	LevelOK
 	LevelWarn
 	LevelFatal
 	Off // can be used to log nothig, even if levels are added or removed in the future
 )
 
-// Levels returns a slice of all Levels (excluding Off and NumLevels) ordered from fine to severe (Debug to Fatal)
+// Levels returns a slice of all Levels (excluding Off and Everything) ordered from fine to severe (Debug to Fatal)
 func Levels() []LogLevel {
-	return []LogLevel{LevelDebug, LevelVerbose, LevelInfo, LevelOK, LevelWarn, LevelFatal}
+	return []LogLevel{LevelTrace, LevelDebug, LevelInfo, LevelWarn, LevelFatal}
 }
 
 // Logger is an interface for leveled loggers.
@@ -32,25 +31,20 @@ type Logger interface {
 	// Logs returns whether this logger logs the specified level
 	Logs(LogLevel) bool
 
+	// Traceln logs a trace-marked line
+	Traceln(val ...interface{})
+	// Tracef logs a trace-marked formatted line
+	Tracef(format string, val ...interface{})
+
 	// Debugln logs a debug-marked line
 	Debugln(val ...interface{})
 	// Debugf logs a debug-marked formatted line
 	Debugf(format string, val ...interface{})
 
-	// Verboseln logs a verbose-marked line
-	Verboseln(val ...interface{})
-	// Verbosef logs a verbose-marked formatted line
-	Verbosef(format string, val ...interface{})
-
 	// Infoln logs an info-marked line
 	Infoln(val ...interface{})
 	// Infof logs an info-marked formatted line
 	Infof(format string, val ...interface{})
-
-	// Okln logs an OK-marked line
-	Okln(val ...interface{})
-	// Okf logs an OK-marked formatted line
-	Okf(format string, val ...interface{})
 
 	// Warnln logs a warn-marked line
 	Warnln(val ...interface{})

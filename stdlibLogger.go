@@ -21,7 +21,7 @@ type StdlibLogger struct {
 // to see if we implement Logger
 var _ Logger = NewStdlibLogger()
 
-// NewStdlibLogger returns a new StdlibLogger that logs to Stdout with a time prefix.
+// NewStdlibLogger returns a new StdlibLogger that logs to Stdout with a time prefix and LevelInfo logging.
 // If the environment variable LOGGER_DISCARD is set, the logger will discard everything (useful for benchmarks)
 func NewStdlibLogger() *StdlibLogger {
 	if os.Getenv("LOGGER_DISCARD") != "" {
@@ -34,7 +34,7 @@ func NewStdlibLogger() *StdlibLogger {
 
 	return &StdlibLogger{
 		logger: log.New(os.Stdout, "", log.Ltime),
-		level:  LevelOK,
+		level:  LevelInfo,
 	}
 }
 
@@ -66,6 +66,24 @@ func (l *StdlibLogger) Logs(level LogLevel) bool {
 	return level >= l.level
 }
 
+// Traceln logs a line with a TRACE prefix.
+func (l *StdlibLogger) Traceln(vals ...interface{}) {
+	if !l.Logs(LevelTrace) {
+		return
+	}
+	s := fmt.Sprintln(vals...)
+	l.logger.Output(2, "TRACE: "+s)
+}
+
+// Tracef logs a formatted line with a TRACE prefix.
+func (l *StdlibLogger) Tracef(format string, vals ...interface{}) {
+	if !l.Logs(LevelTrace) {
+		return
+	}
+	s := fmt.Sprintf(format, vals...)
+	l.logger.Output(2, "TRACE: "+s)
+}
+
 // Debugln logs a line with a DEBUG prefix.
 func (l *StdlibLogger) Debugln(vals ...interface{}) {
 	if !l.Logs(LevelDebug) {
@@ -84,24 +102,6 @@ func (l *StdlibLogger) Debugf(format string, vals ...interface{}) {
 	l.logger.Output(2, "DEBUG: "+s)
 }
 
-// Infoln logs a line with a VERBOSE prefix.
-func (l *StdlibLogger) Verboseln(vals ...interface{}) {
-	if !l.Logs(LevelVerbose) {
-		return
-	}
-	s := fmt.Sprintln(vals...)
-	l.logger.Output(2, "VERBOSE: "+s)
-}
-
-// Infof logs a formatted line with a VERBOSE prefix.
-func (l *StdlibLogger) Verbosef(format string, vals ...interface{}) {
-	if !l.Logs(LevelVerbose) {
-		return
-	}
-	s := fmt.Sprintf(format, vals...)
-	l.logger.Output(2, "VERBOSE: "+s)
-}
-
 // Infoln logs a line with an INFO prefix.
 func (l *StdlibLogger) Infoln(vals ...interface{}) {
 	if !l.Logs(LevelInfo) {
@@ -118,24 +118,6 @@ func (l *StdlibLogger) Infof(format string, vals ...interface{}) {
 	}
 	s := fmt.Sprintf(format, vals...)
 	l.logger.Output(2, "INFO: "+s)
-}
-
-// Okln logs a line with an OK prefix.
-func (l *StdlibLogger) Okln(vals ...interface{}) {
-	if !l.Logs(LevelOK) {
-		return
-	}
-	s := fmt.Sprintln(vals...)
-	l.logger.Output(2, "OK: "+s)
-}
-
-// Okf logs a formatted line with an OK prefix.
-func (l *StdlibLogger) Okf(format string, vals ...interface{}) {
-	if !l.Logs(LevelOK) {
-		return
-	}
-	s := fmt.Sprintf(format, vals...)
-	l.logger.Output(2, "OK: "+s)
 }
 
 // Warnln logs a line with a WARNING prefix.

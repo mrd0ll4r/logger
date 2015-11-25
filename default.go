@@ -16,6 +16,16 @@ func Logs(level LogLevel) bool {
 	return DefaultLogger.Logs(level)
 }
 
+// Traceln calls Traceln on the default logger
+func Traceln(val ...interface{}) {
+	DefaultLogger.Traceln(val)
+}
+
+// Tracef calls Tracef on the default logger
+func Tracef(format string, val ...interface{}) {
+	DefaultLogger.Tracef(format, val)
+}
+
 // Debugln calls Debugln on the default logger
 func Debugln(val ...interface{}) {
 	DefaultLogger.Debugln(val)
@@ -26,16 +36,6 @@ func Debugf(format string, val ...interface{}) {
 	DefaultLogger.Debugf(format, val)
 }
 
-// Verboseln calls Verboseln on the default logger
-func Verboseln(val ...interface{}) {
-	DefaultLogger.Verboseln(val)
-}
-
-// Verbosef calls Verbosef on the default logger
-func Verbosef(format string, val ...interface{}) {
-	DefaultLogger.Verbosef(format, val)
-}
-
 // Infoln calls Infoln on the default logger
 func Infoln(val ...interface{}) {
 	DefaultLogger.Infoln(val)
@@ -44,16 +44,6 @@ func Infoln(val ...interface{}) {
 // Infof calls Infof on the default logger
 func Infof(format string, val ...interface{}) {
 	DefaultLogger.Infof(format, val)
-}
-
-// Okln calls Okln on the default logger
-func Okln(val ...interface{}) {
-	DefaultLogger.Okln(val)
-}
-
-// Okf calls Okf on the default logger
-func Okf(format string, val ...interface{}) {
-	DefaultLogger.Okf(format, val)
 }
 
 // Warnln calls Warnln on the default logger

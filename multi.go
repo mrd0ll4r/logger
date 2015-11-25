@@ -17,7 +17,7 @@ type MultiLogger struct {
 // to see if we implement Logger
 var _ Logger = NewMultiLogger(DefaultLogger)
 
-// NewMultiLogger wraps the provided loggers into one MultiLogger.
+// NewMultiLogger wraps the provided loggers into one MultiLogger with LevelInfo logging.
 // The inner loggers should not be accessed while the MultiLogger is in use.
 // See SetLevel and PropagateLevel for specific level settings
 func NewMultiLogger(loggers ...Logger) *MultiLogger {
@@ -26,7 +26,7 @@ func NewMultiLogger(loggers ...Logger) *MultiLogger {
 	}
 	return &MultiLogger{
 		l:     loggers,
-		level: LevelOK,
+		level: LevelInfo,
 	}
 }
 
@@ -50,6 +50,30 @@ func (m *MultiLogger) SetLevel(level LogLevel) {
 // See Logger.Logs
 func (m *MultiLogger) Logs(level LogLevel) bool {
 	return level >= m.level
+}
+
+// Traceln calls Traceln on all the inner loggers
+func (m *MultiLogger) Traceln(val ...interface{}) {
+	if !m.Logs(LevelTrace) {
+		return
+	}
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	for _, l := range m.l {
+		l.Traceln(val)
+	}
+}
+
+// Tracef calls Tracef on all the inner loggers
+func (m *MultiLogger) Tracef(format string, val ...interface{}) {
+	if !m.Logs(LevelTrace) {
+		return
+	}
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	for _, l := range m.l {
+		l.Tracef(format, val)
+	}
 }
 
 // Debugln calls Debugln on all the inner loggers
@@ -76,30 +100,6 @@ func (m *MultiLogger) Debugf(format string, val ...interface{}) {
 	}
 }
 
-// Verboseln calls Verboseln on all the inner loggers
-func (m *MultiLogger) Verboseln(val ...interface{}) {
-	if !m.Logs(LevelVerbose) {
-		return
-	}
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	for _, l := range m.l {
-		l.Verboseln(val)
-	}
-}
-
-// Verbosef calls Verbosef on all the inner loggers
-func (m *MultiLogger) Verbosef(format string, val ...interface{}) {
-	if !m.Logs(LevelVerbose) {
-		return
-	}
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	for _, l := range m.l {
-		l.Verbosef(format, val)
-	}
-}
-
 // Infoln calls Infoln on all the inner loggers
 func (m *MultiLogger) Infoln(val ...interface{}) {
 	if !m.Logs(LevelInfo) {
@@ -121,30 +121,6 @@ func (m *MultiLogger) Infof(format string, val ...interface{}) {
 	defer m.mu.Unlock()
 	for _, l := range m.l {
 		l.Infof(format, val)
-	}
-}
-
-// Okln calls Okln on all the inner loggers
-func (m *MultiLogger) Okln(val ...interface{}) {
-	if !m.Logs(LevelOK) {
-		return
-	}
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	for _, l := range m.l {
-		l.Okln(val)
-	}
-}
-
-// Okf calls Okf on all the inner loggers
-func (m *MultiLogger) Okf(format string, val ...interface{}) {
-	if !m.Logs(LevelOK) {
-		return
-	}
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	for _, l := range m.l {
-		l.Okf(format, val)
 	}
 }
 
