@@ -58,4 +58,6 @@ type Logger interface {
 }
 
 // DefaultLogger logs to standard output with a time prefix, see NewStdlibLogger()
+// If you want to utilize the default functions (i.e. logger.Infoln("...")), with the StdlibLogger and log.Llongfile or
+// log.Lshortfile, you'll have to change the calldepth on the StdlibLogger, see SetCalldepthForDefault()
 var DefaultLogger Logger = NewStdlibLogger()
