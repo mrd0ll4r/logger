@@ -30,42 +30,83 @@ func TestMulti(t *testing.T) {
 		t.Errorf("PropagateLevel did not propagate properly, expected: %d,%d - got %d,%d", Everything, Everything, m1.Level(), m2.Level())
 	}
 
-	m1.checkLnCount(t, 0, 0, 0,  0, 0)
-	m1.checkFCount(t, 0, 0, 0,  0, 0)
-	m2.checkLnCount(t, 0, 0, 0,  0, 0)
-	m2.checkFCount(t, 0, 0, 0,  0, 0)
+	m1.checkLnCount(t, 0, 0, 0, 0, 0)
+	m1.checkFCount(t, 0, 0, 0, 0, 0)
+	m2.checkLnCount(t, 0, 0, 0, 0, 0)
+	m2.checkFCount(t, 0, 0, 0, 0, 0)
 
 	l.Traceln()
 
-	m1.checkLnCount(t, 1, 0, 0,  0, 0)
-	m1.checkFCount(t, 0, 0, 0,  0, 0)
-	m2.checkLnCount(t, 1, 0, 0,  0, 0)
-	m2.checkFCount(t, 0, 0, 0,  0, 0)
-
-	l.Debugf("")
-
-	m1.checkLnCount(t, 1, 0, 0,  0, 0)
-	m1.checkFCount(t, 0, 1, 0,  0, 0)
-	m2.checkLnCount(t, 1, 0, 0,  0, 0)
-	m2.checkFCount(t, 0, 1, 0,  0, 0)
-
-	l.SetLevel(LevelWarn)
-
-	// should not log
-	l.Traceln()
-	l.Debugln()
-	l.Infoln()
+	m1.checkLnCount(t, 1, 0, 0, 0, 0)
+	m1.checkFCount(t, 0, 0, 0, 0, 0)
+	m2.checkLnCount(t, 1, 0, 0, 0, 0)
+	m2.checkFCount(t, 0, 0, 0, 0, 0)
 
 	l.Tracef("")
+
+	m1.checkLnCount(t, 1, 0, 0, 0, 0)
+	m1.checkFCount(t, 1, 0, 0, 0, 0)
+	m2.checkLnCount(t, 1, 0, 0, 0, 0)
+	m2.checkFCount(t, 1, 0, 0, 0, 0)
+
+	l.Debugln()
+
+	m1.checkLnCount(t, 1, 1, 0, 0, 0)
+	m1.checkFCount(t, 1, 0, 0, 0, 0)
+	m2.checkLnCount(t, 1, 1, 0, 0, 0)
+	m2.checkFCount(t, 1, 0, 0, 0, 0)
+
 	l.Debugf("")
+
+	m1.checkLnCount(t, 1, 1, 0, 0, 0)
+	m1.checkFCount(t, 1, 1, 0, 0, 0)
+	m2.checkLnCount(t, 1, 1, 0, 0, 0)
+	m2.checkFCount(t, 1, 1, 0, 0, 0)
+
+	l.Infoln()
+
+	m1.checkLnCount(t, 1, 1, 1, 0, 0)
+	m1.checkFCount(t, 1, 1, 0, 0, 0)
+	m2.checkLnCount(t, 1, 1, 1, 0, 0)
+	m2.checkFCount(t, 1, 1, 0, 0, 0)
+
 	l.Infof("")
 
-	m1.checkLnCount(t, 1, 0, 0,  0, 0)
-	m1.checkFCount(t, 0, 1, 0,  0, 0)
-	m2.checkLnCount(t, 1, 0, 0,  0, 0)
-	m2.checkFCount(t, 0, 1, 0,  0, 0)
+	m1.checkLnCount(t, 1, 1, 1, 0, 0)
+	m1.checkFCount(t, 1, 1, 1, 0, 0)
+	m2.checkLnCount(t, 1, 1, 1, 0, 0)
+	m2.checkFCount(t, 1, 1, 1, 0, 0)
+
+	l.Warnln()
+
+	m1.checkLnCount(t, 1, 1, 1, 1, 0)
+	m1.checkFCount(t, 1, 1, 1, 0, 0)
+	m2.checkLnCount(t, 1, 1, 1, 1, 0)
+	m2.checkFCount(t, 1, 1, 1, 0, 0)
+
+	l.Warnf("")
+
+	m1.checkLnCount(t, 1, 1, 1, 1, 0)
+	m1.checkFCount(t, 1, 1, 1, 1, 0)
+	m2.checkLnCount(t, 1, 1, 1, 1, 0)
+	m2.checkFCount(t, 1, 1, 1, 1, 0)
+
+	l.Fatalln()
+
+	m1.checkLnCount(t, 1, 1, 1, 1, 1)
+	m1.checkFCount(t, 1, 1, 1, 1, 0)
+	m2.checkLnCount(t, 1, 1, 1, 2, 0)
+	m2.checkFCount(t, 1, 1, 1, 1, 0)
+
+	l.Fatalf("")
+
+	m1.checkLnCount(t, 1, 1, 1, 1, 1)
+	m1.checkFCount(t, 1, 1, 1, 1, 1)
+	m2.checkLnCount(t, 1, 1, 1, 2, 0) //fatal is only called for the first logger
+	m2.checkFCount(t, 1, 1, 1, 2, 0)
 
 	l.SetLevel(Off)
+	//should not log
 
 	l.Traceln()
 	l.Tracef("")
@@ -76,9 +117,10 @@ func TestMulti(t *testing.T) {
 	l.Warnln()
 	l.Warnf("")
 	l.Fatalln()
+	l.Fatalf("")
 
-	m1.checkLnCount(t, 1, 0, 0,  0, 0)
-	m1.checkFCount(t, 0, 1, 0,  0, 0)
-	m2.checkLnCount(t, 1, 0, 0,  0, 0)
-	m2.checkFCount(t, 0, 1, 0,  0, 0)
+	m1.checkLnCount(t, 1, 1, 1, 1, 1)
+	m1.checkFCount(t, 1, 1, 1, 1, 1)
+	m2.checkLnCount(t, 1, 1, 1, 2, 0)
+	m2.checkFCount(t, 1, 1, 1, 2, 0)
 }

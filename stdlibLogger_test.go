@@ -14,7 +14,7 @@ func BenchmarkLshortfileLn(b *testing.B) {
 	l := NewStdlibLogger()
 	l.SetFlags(log.Lshortfile)
 	l.SetLevel(LevelInfo)
-	s := "hi"
+	s := ""
 	for i := 0; i < b.N; i++ {
 		l.Infoln(s)
 	}
@@ -24,7 +24,7 @@ func BenchmarkNoFlagLn(b *testing.B) {
 	l := NewStdlibLogger()
 	l.SetFlags(0)
 	l.SetLevel(LevelInfo)
-	s := "hi"
+	s := ""
 	for i := 0; i < b.N; i++ {
 		l.Infoln(s)
 	}
@@ -35,9 +35,8 @@ func BenchmarkNoFlagF(b *testing.B) {
 	l.SetFlags(0)
 	l.SetLevel(LevelInfo)
 	s := ""
-	s1 := "hi"
 	for i := 0; i < b.N; i++ {
-		l.Infof(s, s1)
+		l.Infof(s, s)
 	}
 }
 
@@ -45,7 +44,7 @@ func BenchmarkLevelTooLow(b *testing.B) {
 	l := NewStdlibLogger()
 	l.SetFlags(0)
 	l.SetLevel(LevelInfo)
-	s := "hi"
+	s := ""
 	for i := 0; i < b.N; i++ {
 		l.Debugln(s)
 	}
