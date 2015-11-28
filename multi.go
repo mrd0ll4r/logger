@@ -15,7 +15,7 @@ type MultiLogger struct {
 }
 
 // to see if we implement Logger
-var _ Logger = NewMultiLogger(DefaultLogger)
+var _ Logger = NewMultiLogger(defaultLogger)
 
 // NewMultiLogger wraps the provided loggers into one MultiLogger with LevelInfo logging.
 // The inner loggers should not be accessed while the MultiLogger is in use.

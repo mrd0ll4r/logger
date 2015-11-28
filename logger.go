@@ -57,7 +57,12 @@ type Logger interface {
 	Fatalf(format string, val ...interface{})
 }
 
-// DefaultLogger logs to standard output with a time prefix, see NewStdlibLogger()
+// defaultLogger logs to standard output with a time prefix, see NewStdlibLogger()
 // If you want to utilize the default functions (i.e. logger.Infoln("...")), with the StdlibLogger and log.Llongfile or
 // log.Lshortfile, you'll have to change the calldepth on the StdlibLogger, see SetCalldepthForDefault()
-var DefaultLogger Logger = NewStdlibLogger()
+var defaultLogger Logger = NewStdlibLogger()
+
+// SetDefaultLogger sets the default logger
+func SetDefaultLogger(l Logger) {
+	defaultLogger = l
+}

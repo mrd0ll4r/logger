@@ -7,7 +7,7 @@ import "testing"
 
 func TestDefaultFuncs(t *testing.T) {
 	m := newMock()
-	DefaultLogger = m
+	defaultLogger = m
 
 	SetLevel(Off)
 	if m.Level() != Off {

@@ -13,7 +13,7 @@ type Selective struct {
 }
 
 // to check if we implement Logger
-var _ Logger = NewSelective(DefaultLogger)
+var _ Logger = NewSelective(defaultLogger)
 
 // NewSelective returns a new Selective, wrapping the provided Logger.
 // The Selective returned will be enabled for every level the inner Logger logs

@@ -8,60 +8,60 @@ func SetLevel(level LogLevel) {
 	if level < Everything || level > Off {
 		panic("Invalid log level")
 	}
-	DefaultLogger.SetLevel(level)
+	defaultLogger.SetLevel(level)
 }
 
 // Logs calls Logs on the default logger
 func Logs(level LogLevel) bool {
-	return DefaultLogger.Logs(level)
+	return defaultLogger.Logs(level)
 }
 
 // Traceln calls Traceln on the default logger
 func Traceln(val ...interface{}) {
-	DefaultLogger.Traceln(val...)
+	defaultLogger.Traceln(val...)
 }
 
 // Tracef calls Tracef on the default logger
 func Tracef(format string, val ...interface{}) {
-	DefaultLogger.Tracef(format, val...)
+	defaultLogger.Tracef(format, val...)
 }
 
 // Debugln calls Debugln on the default logger
 func Debugln(val ...interface{}) {
-	DefaultLogger.Debugln(val...)
+	defaultLogger.Debugln(val...)
 }
 
 // Debugf calls Debugf on the default logger
 func Debugf(format string, val ...interface{}) {
-	DefaultLogger.Debugf(format, val...)
+	defaultLogger.Debugf(format, val...)
 }
 
 // Infoln calls Infoln on the default logger
 func Infoln(val ...interface{}) {
-	DefaultLogger.Infoln(val...)
+	defaultLogger.Infoln(val...)
 }
 
 // Infof calls Infof on the default logger
 func Infof(format string, val ...interface{}) {
-	DefaultLogger.Infof(format, val...)
+	defaultLogger.Infof(format, val...)
 }
 
 // Warnln calls Warnln on the default logger
 func Warnln(val ...interface{}) {
-	DefaultLogger.Warnln(val...)
+	defaultLogger.Warnln(val...)
 }
 
 // Warnf calls Warn of the default logger
 func Warnf(format string, val ...interface{}) {
-	DefaultLogger.Warnf(format, val...)
+	defaultLogger.Warnf(format, val...)
 }
 
 // Fatalln calls Fatalln on the default logger
 func Fatalln(val ...interface{}) {
-	DefaultLogger.Fatalln(val...)
+	defaultLogger.Fatalln(val...)
 }
 
 // Fatalf calls Fatalf on the default logger
 func Fatalf(format string, val ...interface{}) {
-	DefaultLogger.Fatalf(format, val...)
+	defaultLogger.Fatalf(format, val...)
 }
