@@ -4,6 +4,11 @@
 // Package logger contains a level-based logger interface and an implementation of that interface using the stdlib log
 package logger
 
+import (
+	"errors"
+	"strings"
+)
+
 // LogLevel is a level of logging
 type LogLevel int
 
@@ -18,9 +23,36 @@ const (
 	Off // can be used to log nothig, even if levels are added or removed in the future
 )
 
+// ErrUnknownLevel indicates ByName was unable to resolve the level
+var ErrUnknownLevel = errors.New("logger: Unknown level")
+
 // Levels returns a slice of all Levels (excluding Off and Everything) ordered from fine to severe (Debug to Fatal)
 func Levels() []LogLevel {
 	return []LogLevel{LevelTrace, LevelDebug, LevelInfo, LevelWarn, LevelFatal}
+}
+
+// ByName tries to resolve the given name to a log level
+// Levels can be given by their full name (LevelInfo), a short form (info) or just the first letter (i)
+// Returns that level if possible, or (Everything, ErrUnknownLevel) otherwise
+func ByName(name string) (LogLevel, error) {
+	switch strings.ToLower(name) {
+	case "e", "everything":
+		return Everything, nil
+	case "t", "trace", "leveltrace":
+		return LevelTrace, nil
+	case "d", "debug", "leveldebug":
+		return LevelDebug, nil
+	case "i", "info", "levelinfo":
+		return LevelInfo, nil
+	case "w", "warn", "warning", "levelwarn":
+		return LevelWarn, nil
+	case "f", "fatal", "levelfatal":
+		return LevelFatal, nil
+	case "o", "off":
+		return Off, nil
+	default:
+		return Everything, ErrUnknownLevel
+	}
 }
 
 // Logger is an interface for leveled loggers.
